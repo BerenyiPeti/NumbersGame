@@ -6,6 +6,8 @@ let number = 0
 let html = ''
 let selectedNumber
 let placedNumbers = new Array(numbersToPlace + 1)
+let win
+let loss
 
 function ID(elem) {
     return document.getElementById(elem);
@@ -20,13 +22,26 @@ function QS(elem) {
 }
 
 function init() {
+    html = ''
     ID('start').addEventListener('click', onStart)
     ID('new').addEventListener('click', onNew)
     number = 0
     ID('win').style.display = 'none'
     ID('lose').style.display = 'none'
     placeDefaultNumber()
-    
+
+    /* for (let index = 5; index <= 20; index += 5) {
+        html = html += `<button id="btn${index}">${index}</button>`
+
+    }
+    ID('setButtons').innerHTML = html
+
+    for (let index = 5; index <= 20; index += 5) {
+        ID(`btn${index}`).addEventListener('click', function () {
+            numbersToPlace = index
+        })
+
+    } */
 }
 
 function generateNumber() {
@@ -45,6 +60,8 @@ function onStart() {
 }
 
 function onNew() {
+    win = true
+    loss = false
     console.log('new game');
     ID('start').style.display = "block"
     ID('new').style.display = "none"
@@ -64,15 +81,17 @@ function placeDefaultNumber() {
 
 function onPlaceNumber(event) {
     let currentNumber = event.target.id
+    ID(currentNumber).removeEventListener('click', onPlaceNumber)
+    ID(currentNumber).style.cursor = 'default'
     ID(`p${currentNumber}`).innerHTML = number
     checkForWinOrLoss(currentNumber)
     generateNumber()
-    
+
 
 }
 
 function createBoard() {
-    html = html + `<div id="numbers"></div><div id="placedNumbers"></div>`
+    html = `<div id="numbers"></div><div id="placedNumbers"></div>`
     ID('board').innerHTML = html
     html = ''
     for (let index = 1; index < numbersToPlace + 1; index++) {
@@ -90,19 +109,18 @@ function createBoard() {
     for (let index = 0; index < numbersToPlace; index++) {
         ID(index).addEventListener('click', onPlaceNumber)
     }
-
 }
 
 function checkForWinOrLoss(indexToChange) {
     let i = parseInt(indexToChange)
+    placedNumbers[i] = number
     let win = true
     let loss = false
-    placedNumbers[i] = number
     /* console.log(indexToChange);
     console.log(typeof parseInt(indexToChange));
     console.log('index: ' + indexToChange);
     console.log('pn index + 1: ' + placedNumbers[indexToChange + 1]); 
-    console.log('pn index: ' + placedNumbers[indexToChange]);   */  
+    console.log('pn index: ' + placedNumbers[indexToChange]);   */
     /* let i = 0
     while (i < numbersToPlace 
         && placedNumbers[index + 1] >= placedNumbers[index]) 
@@ -118,7 +136,7 @@ function checkForWinOrLoss(indexToChange) {
         if (!placedNumbers[index]) {
             win = false
         }
-        
+
     }
 
     if (win && !loss) {
