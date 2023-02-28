@@ -47,7 +47,12 @@ function init() {
 function generateNumber() {
     number = Math.floor(Math.random() * max) + 1;
     //number++
-    placeDefaultNumber()
+    if (placedNumbers.includes(number)) {
+        generateNumber()
+    } else {
+        placeDefaultNumber()
+
+    }
 }
 
 function onStart() {
