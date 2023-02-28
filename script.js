@@ -1,7 +1,7 @@
 window.addEventListener("load", init)
 
 let max = 999
-let numbersToPlace = 5
+let numbersToPlace = 10
 let number = 0
 let html = ''
 let selectedNumber
